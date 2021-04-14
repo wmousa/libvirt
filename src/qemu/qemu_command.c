@@ -3624,6 +3624,9 @@ qemuBuildNicDevStr(virDomainDef *def,
 
         if (net->teaming && net->teaming->type == VIR_DOMAIN_NET_TEAMING_TYPE_PERSISTENT)
             virBufferAddLit(&buf, ",failover=on");
+
+        VIR_DEBUG("Adding page-per-vq");
+        virBufferAsprintf(&buf, ",page-per-vq=on");
     }
 
     virBufferAsprintf(&buf, ",netdev=host%s", net->info.alias);
@@ -8650,11 +8653,12 @@ qemuBuildInterfaceCommandLine(virQEMUDriver *driver,
                                           cmd, def, net, qemuCaps, &chardev) < 0)
             goto cleanup;
 
+        /*
         if (virNetDevOpenvswitchGetVhostuserIfname(net->data.vhostuser->data.nix.path,
                                                    net->data.vhostuser->data.nix.listen,
                                                    &net->ifname) < 0)
             goto cleanup;
-
+        */
         break;
 
     case VIR_DOMAIN_NET_TYPE_VDPA:
@@ -8735,10 +8739,11 @@ qemuBuildInterfaceCommandLine(virQEMUDriver *driver,
         }
     }
 
+    /*
     if (net->mtu && net->managed_tap != VIR_TRISTATE_BOOL_NO &&
         virNetDevSetMTU(net->ifname, net->mtu) < 0)
         goto cleanup;
-
+    */
     if ((actualType == VIR_DOMAIN_NET_TYPE_NETWORK ||
          actualType == VIR_DOMAIN_NET_TYPE_BRIDGE ||
          actualType == VIR_DOMAIN_NET_TYPE_ETHERNET ||

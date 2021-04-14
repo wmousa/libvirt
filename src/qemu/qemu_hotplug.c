@@ -1315,11 +1315,12 @@ qemuDomainAttachNetDevice(virQEMUDriver *driver,
         if (!(charDevAlias = qemuAliasChardevFromDevAlias(net->info.alias)))
             goto cleanup;
 
+        /*
         if (virNetDevOpenvswitchGetVhostuserIfname(net->data.vhostuser->data.nix.path,
                                                    net->data.vhostuser->data.nix.listen,
                                                    &net->ifname) < 0)
             goto cleanup;
-
+        */
         break;
 
     case VIR_DOMAIN_NET_TYPE_USER:
@@ -1388,10 +1389,11 @@ qemuDomainAttachNetDevice(virQEMUDriver *driver,
         }
     }
 
+    /*
     if (net->mtu && net->managed_tap != VIR_TRISTATE_BOOL_NO &&
         virNetDevSetMTU(net->ifname, net->mtu) < 0)
         goto cleanup;
-
+    */
     for (i = 0; i < tapfdSize; i++) {
         if (qemuSecuritySetTapFDLabel(driver->securityManager,
                                       vm->def, tapfd[i]) < 0)
